@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<head><title>JsonRPCAngularClient</title>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js" type="text/javascript">
+        window.onload = run;
+    </script>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+    <div ng-if="cleanDBMessage">{{ cleanDBMessage }}</div>
+    <div ng-if="createStudentMessage"> {{ createStudentMessage }}</div>
+    <div ng-if="createSchoolObjectMessage"> {{ createSchoolObjectMessage }}</div>
+    <div ng-if="createGradesMessage">{{ createGradesMessage }}</div>
+    <div ng-if="studentsMessage.length >= 1">{{ studentsMessage[0] }}</div>
+    <table style='border: 1px solid black;' ng-if="students.length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>group</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="student in students[0]">
+            <td style='border: 1px solid black'>{{ student["name"] }}</td>
+            <td style='border: 1px solid black'>{{ student["group"] }}</td>
+        </tr>
+    </table>
+    <div ng-if="schoolObjectsMessage.length >= 1"> {{ schoolObjectsMessage[0] }}</div>
+    <table style='border: 1px solid black;' ng-if="schoolObjects.length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>teacher</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="schoolObject in schoolObjects[0]">
+            <td style='border: 1px solid black'>{{ schoolObject["name"] }}</td>
+            <td style='border: 1px solid black'>{{ schoolObject["teacher"] }}</td>
+        </tr>
+    </table>
+    <!--    grades for student alex-->
+    <div ng-if="gradesForStudentMessage['alex'].length >= 1"> {{ gradesForStudentMessage['alex'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['alex'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['alex'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for student iulia-->
+    <div ng-if="gradesForStudentMessage['iulia'].length >= 1"> {{ gradesForStudentMessage['iulia'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['iulia'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['iulia'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object mate-->
+    <div ng-if="gradesForSchoolObjectMessage['mate'].length >= 1"> {{ gradesForSchoolObjectMessage['mate'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['mate'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['mate'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object romana-->
+    <div ng-if="gradesForSchoolObjectMessage['romana'].length >= 1"> {{ gradesForSchoolObjectMessage['romana'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['romana'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['romana'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object info-->
+    <div ng-if="gradesForSchoolObjectMessage['info'].length >= 1"> {{ gradesForSchoolObjectMessage['info'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['info'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['info'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object fizica-->
+    <div ng-if="gradesForSchoolObjectMessage['fizica'].length >= 1"> {{ gradesForSchoolObjectMessage['fizica'][0] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['fizica'].length >= 1">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['fizica'][0]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <div ng-if="updateDataMessage"> {{ updateDataMessage }}</div>
+    <div ng-if="studentsMessage.length >= 2">{{ studentsMessage[1] }}</div>
+    <table style='border: 1px solid black;' ng-if="students.length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>group</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="student in students[1]">
+            <td style='border: 1px solid black'>{{ student["name"] }}</td>
+            <td style='border: 1px solid black'>{{ student["group"] }}</td>
+        </tr>
+    </table>
+    <div ng-if="schoolObjectsMessage.length >= 2"> {{ schoolObjectsMessage[1] }}</div>
+    <table style='border: 1px solid black;' ng-if="schoolObjects.length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>teacher</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="schoolObject in schoolObjects[1]">
+            <td style='border: 1px solid black'>{{ schoolObject["name"] }}</td>
+            <td style='border: 1px solid black'>{{ schoolObject["teacher"] }}</td>
+        </tr>
+    </table>
+    <!--    grades for student alex-->
+    <div ng-if="gradesForStudentMessage['alex'].length >= 2"> {{ gradesForStudentMessage['alex'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['alex'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['alex'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for student iulia-->
+    <div ng-if="gradesForStudentMessage['iulia'].length >= 2"> {{ gradesForStudentMessage['iulia'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['iulia'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['iulia'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object mate-->
+    <div ng-if="gradesForSchoolObjectMessage['mate'].length >= 2"> {{ gradesForSchoolObjectMessage['mate'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['mate'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['mate'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object romana-->
+    <div ng-if="gradesForSchoolObjectMessage['romana'].length >= 2"> {{ gradesForSchoolObjectMessage['romana'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['romana'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['romana'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object info-->
+    <div ng-if="gradesForSchoolObjectMessage['info'].length >= 2"> {{ gradesForSchoolObjectMessage['info'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['info'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['info'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object fizica-->
+    <div ng-if="gradesForSchoolObjectMessage['fizica'].length >= 2"> {{ gradesForSchoolObjectMessage['fizica'][1] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['fizica'].length >= 2">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['fizica'][1]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <div ng-if="deleteDataMessage">{{ deleteDataMessage }}</div>
+    <div ng-if="studentsMessage.length >= 3">{{ studentsMessage[2] }}</div>
+    <table style='border: 1px solid black;' ng-if="students.length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>group</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="student in students[2]">
+            <td style='border: 1px solid black'>{{ student["name"] }}</td>
+            <td style='border: 1px solid black'>{{ student["group"] }}</td>
+        </tr>
+    </table>
+    <div ng-if="schoolObjectsMessage.length >= 3"> {{ schoolObjectsMessage[2] }}</div>
+    <table style='border: 1px solid black;' ng-if="schoolObjects.length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>teacher</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="schoolObject in schoolObjects[2]">
+            <td style='border: 1px solid black'>{{ schoolObject["name"] }}</td>
+            <td style='border: 1px solid black'>{{ schoolObject["teacher"] }}</td>
+        </tr>
+    </table>
+    <!--    grades for student alex-->
+    <div ng-if="gradesForStudentMessage['alex'].length >= 3"> {{ gradesForStudentMessage['alex'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['alex'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['alex'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for student iulia-->
+    <div ng-if="gradesForStudentMessage['iulia'].length >= 3"> {{ gradesForStudentMessage['iulia'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForStudent['iulia'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForStudent['iulia'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object mate-->
+    <div ng-if="gradesForSchoolObjectMessage['mate'].length >= 3"> {{ gradesForSchoolObjectMessage['mate'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['mate'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['mate'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object romana-->
+    <div ng-if="gradesForSchoolObjectMessage['romana'].length >= 3"> {{ gradesForSchoolObjectMessage['romana'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['romana'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['romana'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object info-->
+    <div ng-if="gradesForSchoolObjectMessage['info'].length >= 3"> {{ gradesForSchoolObjectMessage['info'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['info'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['info'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+    <!-- grades for school object fizica-->
+    <div ng-if="gradesForSchoolObjectMessage['fizica'].length >= 3"> {{ gradesForSchoolObjectMessage['fizica'][2] }}</div>
+    <table style='border: 1px solid black;' ng-if="gradesForSchoolObject['fizica'].length >= 3">
+        <tr style='border: 1px solid black;'>
+            <td style='border: 1px solid black;background: aqua'>name</td>
+            <td style='border: 1px solid black;background: aqua'>school object</td>
+            <td style='border: 1px solid black;background: aqua'>value</td>
+        </tr>
+        <tr style='border: 1px solid black;' ng-repeat="grade in gradesForSchoolObject['fizica'][2]">
+            <td style='border: 1px solid black'>{{ grade["student"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["schoolObject"]["name"] }}</td>
+            <td style='border: 1px solid black'>{{ grade["value"] }}</td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    angular.module("myApp", [])
+        .controller("myCtrl", ["$scope", "$http", function ($scope, $http) {
+            const urlServ = "http://localhost/php/app/JsonRPCPHPServer.php";
+            const conf = {headers: {"Content-Type": "application/json"}};
+            $scope.cleanDBMessage = "";
+            $scope.createStudentMessage = "";
+            $scope.createSchoolObjectMessage = "";
+            $scope.createGradesMessage = "";
+            $scope.updateDataMessage = "";
+            $scope.deleteDataMessage = "";
+            $scope.studentsMessage = [];
+            $scope.schoolObjectsMessage = [];
+            $scope.gradesForStudentMessage = {"alex": [], "iulia": []};
+            $scope.gradesForSchoolObjectMessage = {"romana": [], "info": [], "mate": [], "fizica": []};
+            $scope.students = [];
+            $scope.schoolObjects = [];
+            $scope.gradesForStudent = {"alex": [], "iulia": []};
+            $scope.gradesForSchoolObject = {"romana": [], "info": [], "mate": [], "fizica": []};
+
+            $scope.sleep = async function (milliseconds) {
+                await new Promise(f => setTimeout(f, milliseconds));
+            }
+
+            $scope.run = async function () {
+                $scope.cleanupDatabase();
+                await $scope.sleep(1000);
+                await $scope.createData();
+                await $scope.getData();
+                await $scope.updateData();
+                await $scope.getData();
+                await $scope.removeData();
+                await $scope.getData();
+            }
+
+
+            $scope.cleanupDatabase = function () {
+                req = '{"id": "0", "jsonrpc": "2.0", "method": "cleanupDatabase", "params": {}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.cleanDBMessage = "Cleaning the DB ...";
+                    });
+            }
+
+            $scope.createData = async function () {
+                await $scope.createStudents();
+                await $scope.createSchoolObjects();
+                await $scope.createGrades();
+            }
+
+            $scope.getData = async function () {
+                $scope.getStudents();
+                await $scope.sleep(1000);
+                $scope.getSchoolObjects();
+                await $scope.sleep(1000);
+                await $scope.getGrades();
+            }
+
+            $scope.updateData = async function () {
+                await $scope.updateStudents();
+                await $scope.updateSchoolObjects();
+                await $scope.updateGrades();
+            }
+
+            $scope.removeData = async function () {
+                await $scope.deleteStudents();
+                await $scope.deleteSchoolObjects();
+            }
+
+            $scope.deleteStudents = async function () {
+                $scope.deleteStudent("iulia");
+            }
+
+            $scope.deleteSchoolObjects = async function () {
+                $scope.deleteSchoolObject("romana");
+                await $scope.sleep(1000);
+                $scope.deleteSchoolObject("fizica");
+            }
+
+            $scope.updateGrades = async function () {
+                $scope.updateGrade("alex", "mate");
+                await $scope.sleep(1000);
+                $scope.updateGrade("alex", "info");
+                await $scope.sleep(1000);
+                $scope.updateGrade("alex", "romana");
+                await $scope.sleep(1000);
+                $scope.updateGrade("alex", "fizica");
+                await $scope.sleep(1000);
+                $scope.updateGrade("iulia", "info");
+                await $scope.sleep(1000);
+                $scope.updateGrade("iulia", "mate");
+                await $scope.sleep(1000);
+                $scope.updateGrade("iulia", "romana");
+            }
+
+            $scope.updateSchoolObjects = async function () {
+                $scope.updateSchoolObject("mate", "voiculescu");
+                await $scope.sleep(1000);
+                $scope.updateSchoolObject("info", "marinela");
+                await $scope.sleep(1000);
+                $scope.updateSchoolObject("fizica", "gurzau");
+                await $scope.sleep(1000);
+                $scope.updateSchoolObject("romana", "minodora");
+            }
+
+            $scope.updateStudents = async function () {
+                $scope.updateStudent("alex", "22");
+                await $scope.sleep(1000);
+                $scope.updateStudent("iulia", "21");
+            }
+
+            $scope.createStudents = async function () {
+                $scope.createStudent("alex", "244");
+                await $scope.sleep(1000);
+                $scope.createStudent("iulia", "244");
+            }
+
+            $scope.createSchoolObjects = async function () {
+                $scope.createSchoolObject("mate", "Ionescu");
+                await $scope.sleep(1000);
+                $scope.createSchoolObject("romana", "Pantea");
+                await $scope.sleep(1000);
+                $scope.createSchoolObject("info", "Gligor");
+                await $scope.sleep(1000);
+                $scope.createSchoolObject("fizica", "Galis");
+                await $scope.sleep(1000);
+            }
+
+            $scope.createGrades = async function () {
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("alex", "mate", 10);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("alex", "romana", 7);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("alex", "info", 3);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("alex", "fizica", 10);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("iulia", "mate", 10);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("iulia", "romana", 10);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("iulia", "fizica", 10);
+                await $scope.sleep(1000);
+                $scope.createGradeForStudentAndSchoolObject("iulia", "info", 5);
+                await $scope.sleep(1000);
+            }
+
+            $scope.getGrades = async function () {
+                $scope.getGradesForStudent("alex");
+                await $scope.sleep(1000);
+                $scope.getGradesForStudent("iulia");
+                await $scope.sleep(1000);
+                $scope.getGradesForSchoolObject("mate");
+                await $scope.sleep(1000);
+                $scope.getGradesForSchoolObject("romana")
+                await $scope.sleep(1000);
+                $scope.getGradesForSchoolObject("info");
+                await $scope.sleep(1000);
+                $scope.getGradesForSchoolObject("fizica");
+            }
+
+            $scope.getSchoolObjects = function () {
+                req = '{"id": "6", "jsonrpc": "2.0", "method": "getAllSchoolObjects", "params": {}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.schoolObjectsMessage.push("Getting school objects ...");
+                        $scope.schoolObjects.push(response.data["result"]);
+                    });
+            }
+
+            $scope.getStudents = function () {
+                req = '{"id": "4", "jsonrpc": "2.0", "method": "getAllStudents", "params": {}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.studentsMessage.push("Getting students ...");
+                        $scope.students.push(response.data["result"]);
+                    });
+            }
+
+            $scope.createGradeForStudentAndSchoolObject = function (student, schoolObject, value) {
+                req = '{"id": "3", "jsonrpc": "2.0", "method": "addGrade", "params": {"grade": {"student": { "name": "' + student +
+                    '", "group": "233" },"schoolObject": { "name": "' + schoolObject + '", "teacher": "teacher" },"value": "' + value + '"}}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.createGradesMessage = "Creating grades ...";
+                    });
+            }
+
+            $scope.createStudent = function (name, group) {
+                req = '{"id": "1", "jsonrpc": "2.0", "method": "addStudent", "params": {"student": {"name": "' + name + '", "group": "' + group + '"} }}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.createStudentMessage = "Creating students ...";
+                    });
+            }
+
+            $scope.createSchoolObject = function (name, teacher) {
+                req = '{"id": "2", "jsonrpc": "2.0", "method": "addSchoolObject", "params": {"schoolObject": {"name": "' + name + '", "teacher": "'
+                    + teacher + '"} }}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.createSchoolObjectMessage = "Creating school objects ...";
+                    });
+            }
+
+            $scope.getGradesForStudent = function (student) {
+                req = '{"id": "5", "jsonrpc": "2.0", "method": "getCatalogForStudent", "params": {"student": "' + student + '"}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.gradesForStudentMessage[student].push("Getting grades for student " + student);
+                        $scope.gradesForStudent[student].push(response.data["result"]);
+                    });
+            }
+
+            $scope.getGradesForSchoolObject = function (schoolObject) {
+                req = '{"id": "6", "jsonrpc": "2.0", "method": "getCatalogForSchoolObject", "params": {"schoolObject": "' + schoolObject + '"}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.gradesForSchoolObjectMessage[schoolObject].push("Getting grades for school object: " + schoolObject);
+                        $scope.gradesForSchoolObject[schoolObject].push(response.data["result"]);
+                    });
+            }
+
+            $scope.updateStudent = function (student, group) {
+                req = '{"id": "7", "jsonrpc": "2.0", "method": "updateStudent", "params": {"student": {"name": "' + student + '", "group" : "' +
+                    + group + '"}}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                       $scope.updateDataMessage = "Updating data ...";
+                    });
+            }
+
+            $scope.updateSchoolObject = function (schoolObject, teacher) {
+                req = '{"id": "8", "jsonrpc": "2.0", "method": "updateSchoolObject", "params": {"schoolObject": {"name": "' + schoolObject +
+                    '", "teacher" : "' + teacher + '"}}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.updateDataMessage = "Updating data ...";
+                    });
+            }
+
+            $scope.updateGrade = function (student, schoolObject) {
+                req = '{"id": "9", "jsonrpc": "2.0", "method": "updateGrade", "params": {"grade": {"student": { "name": "' + student + '" }, ' +
+                    + '"schoolObject": { "name": "' + schoolObject + '" }, "value": "' + Math.floor(Math.random() * 10) + '"}}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.updateDataMessage = "Updating data ...";
+                    });
+            }
+
+            $scope.deleteStudent = function (student) {
+                req = '{"id": "10", "jsonrpc": "2.0", "method": "deleteStudent", "params": {"student": "' +  student + '"}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.deleteDataMessage = "Deleting data ...";
+                    });
+            }
+
+            $scope.deleteSchoolObject = function (schoolObject) {
+                req = '{"id": "11", "jsonrpc": "2.0", "method": "deleteSchoolObject", "params": {"schoolObject": "' + schoolObject + '"}}';
+                $http.post(urlServ, req, conf)
+                    .then(function (response) {
+                        $scope.deleteDataMessage = "Deleting data ...";
+                    });
+            }
+
+            $scope.run();
+
+        }])
+</script>
+</body>
+</html>
+<!-- Acest fisier trebuie sa fie in htdocs al serverului web care contine Jh1Serv.php (sau in cgi-bin/Jy1Serv.py) -->

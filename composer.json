@@ -1,0 +1,20 @@
+{
+    "require": {
+        "doctrine/dbal": "^3.3",
+        "doctrine/orm": "^2.12",
+        "doctrine/annotations": "^1.13",
+        "symfony/cache": "^6.0",
+        "vlucas/phpdotenv": "^5.4",
+        "psr/container": "^2.0",
+        "monolog/monolog": "^3.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Students\\": "app\\"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
